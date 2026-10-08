@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Manage Certificates</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Manage Certificates</h1>
+
+    <h2>Certificate Management</h2>
+
+    <p>View certificates issued to users on the platform.</p>
+
+    <hr>
+
+    <div id="certificateList">
+        Loading certificates...
+    </div>
+
+    <hr>
+
+    <button onclick="goBack()">
+        Back to Admin Dashboard
+    </button>
+
+    <script>
+
+        function loadCertificates() {
+
+            fetch("/certificates?userId=2")
+
+            .then(response => response.json())
+
+            .then(certificates => {
+
+                let certificateList =
+                    document.getElementById("certificateList");
+
+                certificateList.innerHTML = "";
+
+                if (certificates.length === 0) {
+
+                    certificateList.innerHTML =
+                        "No certificates found.";
+
+                    return;
+                }
+
+                certificates.forEach(certificate => {
+
+                    let certificateDiv =
+                        document.createElement("div");
+
+                    certificateDiv.innerHTML =
+
+                        "<h3>Certificate No: " +
+                        certificate.certificateNo +
+                        "</h3>" +
+
+                        "<p>Certificate ID: " +
+                        certificate.certificateId +
+                        "</p>" +
+
+                        "<p>User ID: " +
+                        certificate.userId +
+                        "</p>" +
+
+                        "<p>Course ID: " +
+                        certificate.courseId +
+                        "</p>" +
+
+                        "<p>Issue Date: " +
+                        certificate.issueDate +
+                        "</p>" +
+
+                        "<hr>";
+
+                    certificateList.appendChild(certificateDiv);
+
+                });
+
+            })
+
+            .catch(error => {
+
+                document.getElementById("certificateList").innerHTML =
+                    "Unable to load certificates.";
+
+            });
+
+        }
+
+        function goBack() {
+
+            window.location.href =
+                "/admin.html";
+
+        }
+
+        loadCertificates();
+
+    </script>
+
+</body>
+
+</html>

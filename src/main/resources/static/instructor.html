@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Instructor Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Instructor Dashboard</h1>
+
+    <h2>Welcome, Instructor!</h2>
+
+    <p>You can manage your courses and course content.</p>
+
+    <hr>
+
+    <h2>Instructor Options</h2>
+
+    <h3>Manage Courses</h3>
+
+    <p>Create and manage your courses.</p>
+
+    <button onclick="manageCourses()">
+        Manage Courses
+    </button>
+
+    <hr>
+
+    <h3>Course Content</h3>
+
+    <p>Upload and manage course materials.</p>
+
+    <button onclick="manageContent()">
+        Manage Content
+    </button>
+
+    <hr>
+
+    <h3>Logout</h3>
+
+    <button onclick="logout()">
+        Logout
+    </button>
+
+    <script>
+
+        function manageCourses() {
+            window.location.href = "/manage-courses.html";
+        }
+
+        function manageContent() {
+            window.location.href = "/manage-content.html";
+        }
+
+        function logout() {
+            window.location.href = "/login.html";
+        }
+
+    </script>
+
+</body>
+
+</html>

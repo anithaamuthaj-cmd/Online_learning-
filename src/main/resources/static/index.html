@@ -1,0 +1,54 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Learning Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Online Learning Platform</h1>
+    </header>
+
+    <div class="container">
+
+        <h2>Available Courses</h2>
+
+        <div id="courses" class="course-container">
+            Loading courses...
+        </div>
+
+    </div>
+
+    <script>
+        fetch('/courses')
+            .then(response => response.json())
+            .then(courses => {
+
+                let output = "";
+
+                courses.forEach(course => {
+                    output += `
+                        <div class="course-card">
+                            <h3>${course.title}</h3>
+                            <p>${course.description}</p>
+                        </div>
+                    `;
+                });
+
+                document.getElementById("courses").innerHTML = output;
+            })
+            .catch(error => {
+
+                document.getElementById("courses").innerHTML =
+                    "Unable to load courses.";
+
+                console.log(error);
+            });
+    </script>
+
+</body>
+</html>
+```

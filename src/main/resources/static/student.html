@@ -1,0 +1,581 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>User Dashboard</h1>
+
+<h2 id="welcomeMessage">Welcome!</h2>
+
+<p>You can view and enroll in courses.</p>
+
+<button onclick="openQuiz()">Take Quiz</button>
+
+<hr>
+
+<h2>My Enrolled Courses</h2>
+
+<div id="enrolledCourseList"></div>
+
+<hr>
+
+<h2>My Progress</h2>
+
+<div id="progressList"></div>
+
+<hr>
+
+<h2>My Certificates</h2>
+
+<div id="certificateList"></div>
+
+<hr>
+
+<h2>Available Courses</h2>
+
+<div id="courseList"></div>
+
+
+<script>
+
+// Get logged-in user's ID
+let userId = localStorage.getItem("userId");
+
+// Check whether user is logged in
+if (!userId) {
+
+    alert("Please login first.");
+
+    window.location.href = "/login.html";
+
+}
+
+
+// Get logged-in user's role
+let userRole = localStorage.getItem("userRole");
+
+
+// Only USER should access this dashboard
+if (userRole !== "USER") {
+
+    alert("Unauthorized access.");
+
+    window.location.href = "/login.html";
+
+}
+
+
+// For now, display user name based on ID
+// We will make this dynamic from database later
+if (userId === "2") {
+
+    document.getElementById("welcomeMessage").innerHTML =
+        "Welcome, Anu!";
+
+} else {
+
+    document.getElementById("welcomeMessage").innerHTML =
+        "Welcome, User!";
+
+}
+
+
+let enrolledCourses = [];
+
+
+// Load all dashboard data
+loadEnrolledCourses();
+loadProgress();
+loadCertificates();
+
+
+// Get enrolled course IDs
+fetch("/enrollments?userId=" + userId)
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error("Failed to load enrollments");
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        // Remove duplicate course IDs
+        enrolledCourses = [...new Set(data)];
+
+        loadCourses();
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        enrolledCourses = [];
+
+        loadCourses();
+
+    });
+
+
+// Open quiz page
+function openQuiz() {
+
+    window.location.href = "/quiz.html";
+
+}
+
+
+// Load enrolled courses
+function loadEnrolledCourses() {
+
+    fetch("/my-courses?userId=" + userId)
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load enrolled courses"
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(courses => {
+
+            let enrolledCourseList =
+                document.getElementById(
+                    "enrolledCourseList"
+                );
+
+            enrolledCourseList.innerHTML = "";
+
+
+            if (courses.length === 0) {
+
+                enrolledCourseList.innerHTML =
+                    "<p>You have not enrolled in any course yet.</p>";
+
+                return;
+
+            }
+
+
+            // Remove duplicate courses
+            let uniqueCourses = [];
+
+            courses.forEach(course => {
+
+                let exists =
+                    uniqueCourses.some(
+                        c => c.courseId === course.courseId
+                    );
+
+                if (!exists) {
+
+                    uniqueCourses.push(course);
+
+                }
+
+            });
+
+
+            uniqueCourses.forEach(course => {
+
+                let courseDiv =
+                    document.createElement("div");
+
+
+                courseDiv.innerHTML =
+
+                    "<h3>" +
+                    course.title +
+                    "</h3>" +
+
+                    "<p>" +
+                    course.description +
+                    "</p>" +
+
+                    "<p>Price: ₹" +
+                    course.coursePrice +
+                    "</p>" +
+
+                    "<button onclick=\"viewCourse(" +
+                    course.courseId +
+                    ")\">" +
+                    "View Course" +
+                    "</button>" +
+
+                    "<hr>";
+
+
+                enrolledCourseList.appendChild(
+                    courseDiv
+                );
+
+            });
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            document.getElementById(
+                "enrolledCourseList"
+            ).innerHTML =
+                "<p>Unable to load enrolled courses.</p>";
+
+        });
+
+}
+
+
+// Open course page
+function viewCourse(courseId) {
+
+    window.location.href =
+        "/course.html?courseId=" + courseId;
+
+}
+
+
+// Load progress
+function loadProgress() {
+
+    fetch("/progress?userId=" + userId)
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load progress"
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(progressData => {
+
+            let progressList =
+                document.getElementById(
+                    "progressList"
+                );
+
+            progressList.innerHTML = "";
+
+
+            if (progressData.length === 0) {
+
+                progressList.innerHTML =
+                    "<p>No progress available.</p>";
+
+                return;
+
+            }
+
+
+            progressData.forEach(progress => {
+
+                let progressDiv =
+                    document.createElement("div");
+
+
+                progressDiv.innerHTML =
+
+                    "<p>Content ID: " +
+                    progress.contentId +
+                    "</p>" +
+
+                    "<p>Progress Marks: " +
+                    progress.progressMarks +
+                    "</p>" +
+
+                    "<p>Status: " +
+                    progress.completeStatus +
+                    "</p>" +
+
+                    "<p>Completed Date: " +
+
+                    (
+                        progress.completedAt === null
+                        ? "Not completed"
+                        : progress.completedAt
+                    ) +
+
+                    "</p>" +
+
+                    "<hr>";
+
+
+                progressList.appendChild(
+                    progressDiv
+                );
+
+            });
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            document.getElementById(
+                "progressList"
+            ).innerHTML =
+                "<p>Unable to load progress.</p>";
+
+        });
+
+}
+
+
+// Load certificates
+function loadCertificates() {
+
+    fetch("/certificates?userId=" + userId)
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load certificates"
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(certificates => {
+
+            let certificateList =
+                document.getElementById(
+                    "certificateList"
+                );
+
+            certificateList.innerHTML = "";
+
+
+            if (certificates.length === 0) {
+
+                certificateList.innerHTML =
+                    "<p>No certificates available.</p>";
+
+                return;
+
+            }
+
+
+            certificates.forEach(certificate => {
+
+                let certificateDiv =
+                    document.createElement("div");
+
+
+                certificateDiv.innerHTML =
+
+                    "<h3>Certificate: " +
+                    certificate.certificateNo +
+                    "</h3>" +
+
+                    "<p>Course ID: " +
+                    certificate.courseId +
+                    "</p>" +
+
+                    "<p>Issue Date: " +
+                    certificate.issueDate +
+                    "</p>" +
+
+                    "<hr>";
+
+
+                certificateList.appendChild(
+                    certificateDiv
+                );
+
+            });
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            document.getElementById(
+                "certificateList"
+            ).innerHTML =
+                "<p>Unable to load certificates.</p>";
+
+        });
+
+}
+
+
+// Load all available courses
+function loadCourses() {
+
+    fetch("/courses")
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to load courses"
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(courses => {
+
+            let courseList =
+                document.getElementById(
+                    "courseList"
+                );
+
+            courseList.innerHTML = "";
+
+
+            courses.forEach(course => {
+
+                let courseDiv =
+                    document.createElement("div");
+
+
+                let isEnrolled =
+                    enrolledCourses.includes(
+                        course.courseId
+                    );
+
+
+                let buttonText =
+                    isEnrolled
+                    ? "Already Enrolled"
+                    : "Enroll";
+
+
+                let buttonAction =
+                    isEnrolled
+                    ? ""
+                    : "onclick=\"enrollCourse(" +
+                      course.courseId +
+                      ")\"";
+
+
+                courseDiv.innerHTML =
+
+                    "<h3>" +
+                    course.title +
+                    "</h3>" +
+
+                    "<p>" +
+                    course.description +
+                    "</p>" +
+
+                    "<p>Price: ₹" +
+                    course.coursePrice +
+                    "</p>" +
+
+                    "<button " +
+                    buttonAction +
+                    ">" +
+                    buttonText +
+                    "</button>" +
+
+                    "<hr>";
+
+
+                courseList.appendChild(
+                    courseDiv
+                );
+
+            });
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            document.getElementById(
+                "courseList"
+            ).innerHTML =
+                "<p>Unable to load courses.</p>";
+
+        });
+
+}
+
+
+// Enroll in course
+function enrollCourse(courseId) {
+
+    fetch(
+        "/enroll?userId=" +
+        userId +
+        "&courseId=" +
+        courseId,
+        {
+            method: "POST"
+        }
+    )
+
+    .then(response => response.text())
+
+    .then(result => {
+
+        alert(result);
+
+
+        if (
+            result === "Enrollment successful!"
+        ) {
+
+            location.reload();
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Enrollment failed!");
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>

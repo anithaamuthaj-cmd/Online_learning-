@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Sign Up - Online Learning Platform</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2
+            );
+
+            padding: 20px;
+        }
+
+        .signup-container {
+
+            width: 430px;
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .logo {
+
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 15px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2
+            );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+
+            box-shadow:
+                0 8px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        .o-letter {
+
+            font-family: Georgia, serif;
+
+            font-size: 34px;
+
+            font-weight: 900;
+
+            letter-spacing: -7px;
+
+            transform: translateX(-3px);
+        }
+
+        .l-letter {
+
+            font-family: Georgia, serif;
+
+            font-size: 38px;
+
+            font-weight: 900;
+
+            font-style: italic;
+
+            margin-left: 3px;
+
+            transform: translateY(-2px);
+        }
+
+        h1 {
+
+            text-align: center;
+
+            color: #333;
+
+            font-size: 25px;
+
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #777;
+
+            font-size: 14px;
+
+            margin-bottom: 25px;
+        }
+
+        label {
+
+            display: block;
+
+            color: #444;
+
+            font-weight: bold;
+
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            margin-bottom: 17px;
+        }
+
+        input:focus,
+        select:focus {
+
+            border-color: #667eea;
+
+            box-shadow:
+                0 0 0 3px rgba(102, 126, 234, 0.15);
+        }
+
+        .requirements {
+
+            background: #f5f3ff;
+
+            border-left: 4px solid #764ba2;
+
+            padding: 12px 15px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+        }
+
+        .requirements p {
+
+            font-weight: bold;
+
+            color: #555;
+
+            margin-bottom: 7px;
+        }
+
+        .requirements ul {
+
+            padding-left: 18px;
+
+            color: #666;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        button {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2
+            );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        #message {
+
+            margin-top: 15px;
+
+            text-align: center;
+
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        .login-link {
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+        .login-link a {
+
+            color: #667eea;
+
+            font-weight: bold;
+
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="signup-container">
+
+        <div class="logo">
+            <span class="o-letter">O</span>
+            <span class="l-letter">L</span>
+        </div>
+
+        <h1>Create Your Account</h1>
+
+        <p class="subtitle">
+            Join the Online Learning Platform
+        </p>
+
+
+        <form id="signupForm">
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                id="userName"
+                placeholder="Enter your full name"
+                required
+            >
+
+
+            <label>Email</label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Create a password"
+                required
+            >
+
+
+            <label>Confirm Password</label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm your password"
+                required
+            >
+
+
+            <label>Account Type</label>
+
+            <select id="userRole" required>
+
+                <option value="">
+                    Select account type
+                </option>
+
+                <option value="USER">
+                    User
+                </option>
+
+                <option value="INSTRUCTOR">
+                    Instructor
+                </option>
+
+            </select>
+
+
+            <div class="requirements">
+
+                <p>Password must contain:</p>
+
+                <ul>
+
+                    <li>At least 8 characters</li>
+
+                    <li>One uppercase letter</li>
+
+                    <li>One lowercase letter</li>
+
+                    <li>One number</li>
+
+                    <li>One special character</li>
+
+                </ul>
+
+            </div>
+
+
+            <button type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+
+        <p id="message"></p>
+
+
+        <p class="login-link">
+
+            Already have an account?
+
+            <a href="/login.html">
+                Sign In
+            </a>
+
+        </p>
+
+    </div>
+
+
+    <script>
+
+        document.getElementById("signupForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+
+                let userName =
+                    document.getElementById("userName").value;
+
+                let email =
+                    document.getElementById("email").value;
+
+                let password =
+                    document.getElementById("password").value;
+
+                let confirmPassword =
+                    document.getElementById("confirmPassword").value;
+
+                let userRole =
+                    document.getElementById("userRole").value;
+
+                let message =
+                    document.getElementById("message");
+
+
+                let passwordPattern =
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/;
+
+
+                if (!passwordPattern.test(password)) {
+
+                    message.style.color = "#d63031";
+
+                    message.innerHTML =
+                        "Password must contain at least 8 characters, " +
+                        "one uppercase letter, one lowercase letter, " +
+                        "one number and one special character.";
+
+                    return;
+                }
+
+
+                if (password !== confirmPassword) {
+
+                    message.style.color = "#d63031";
+
+                    message.innerHTML =
+                        "Passwords do not match.";
+
+                    return;
+                }
+
+
+                if (userRole === "") {
+
+                    message.style.color = "#d63031";
+
+                    message.innerHTML =
+                        "Please select an account type.";
+
+                    return;
+                }
+
+
+                fetch(
+                    "/signup?userName=" +
+                    encodeURIComponent(userName) +
+                    "&email=" +
+                    encodeURIComponent(email) +
+                    "&password=" +
+                    encodeURIComponent(password) +
+                    "&userRole=" +
+                    encodeURIComponent(userRole),
+                    {
+                        method: "POST"
+                    }
+                )
+
+                .then(response => response.text())
+
+                .then(result => {
+
+                    if (result === "Account created successfully!") {
+
+                        message.style.color = "#00a86b";
+
+                        message.innerHTML =
+                            result +
+                            " Redirecting to Sign In...";
+
+                        setTimeout(function() {
+
+                            window.location.href =
+                                "/login.html";
+
+                        }, 1500);
+
+                    }
+
+                    else {
+
+                        message.style.color = "#d63031";
+
+                        message.innerHTML = result;
+
+                    }
+
+                })
+
+                .catch(error => {
+
+                    message.style.color = "#d63031";
+
+                    message.innerHTML =
+                        "Unable to create account. Please try again.";
+
+                });
+
+            });
+
+    </script>
+
+</body>
+
+</html>
+

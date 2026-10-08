@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Manage Course Content</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Manage Course Content</h1>
+
+    <h2>Course Content Management</h2>
+
+    <p>View and manage the content of your courses.</p>
+
+    <hr>
+
+    <button onclick="addContent()">
+        Add New Content
+    </button>
+
+    <hr>
+
+    <h3>Select Course</h3>
+
+    <select id="courseSelect" onchange="loadContent()">
+
+        <option value="">Select a course</option>
+
+    </select>
+
+    <hr>
+
+    <h3>Course Content</h3>
+
+    <div id="contentList">
+        Select a course to view its content.
+    </div>
+
+    <hr>
+
+    <button onclick="goBack()">
+        Back to Dashboard
+    </button>
+
+
+    <script>
+
+        function loadCourses() {
+
+            fetch("/courses")
+
+            .then(response => response.json())
+
+            .then(courses => {
+
+                let select =
+                    document.getElementById("courseSelect");
+
+                courses.forEach(course => {
+
+                    let option =
+                        document.createElement("option");
+
+                    option.value =
+                        course.courseId;
+
+                    option.textContent =
+                        course.title;
+
+                    select.appendChild(option);
+
+                });
+
+            })
+
+            .catch(error => {
+
+                alert("Unable to load courses.");
+
+            });
+
+        }
+
+
+        function loadContent() {
+
+            let courseId =
+                document.getElementById("courseSelect").value;
+
+            let contentList =
+                document.getElementById("contentList");
+
+            if (courseId === "") {
+
+                contentList.innerHTML =
+                    "Select a course to view its content.";
+
+                return;
+
+            }
+
+            fetch("/course-content?courseId=" + courseId)
+
+            .then(response => response.json())
+
+            .then(contents => {
+
+                contentList.innerHTML = "";
+
+                if (contents.length === 0) {
+
+                    contentList.innerHTML =
+                        "No content available for this course.";
+
+                    return;
+
+                }
+
+                contents.forEach(content => {
+
+                    let contentDiv =
+                        document.createElement("div");
+
+                    contentDiv.innerHTML =
+
+                        "<h3>" +
+                        content.title +
+                        "</h3>" +
+
+                        "<p>Content ID: " +
+                        content.contentId +
+                        "</p>" +
+
+                        "<p>Type: " +
+                        content.contentType +
+                        "</p>" +
+
+                        "<p>Duration: " +
+                        content.duration +
+                        " minutes</p>" +
+
+                        "<p>URL: " +
+                        content.contentUrl +
+                        "</p>" +
+
+                        "<button onclick=\"editContent(" +
+                        content.contentId +
+                        ")\">Edit</button>" +
+
+                        " " +
+
+                        "<button onclick=\"deleteContent(" +
+                        content.contentId +
+                        ")\">Delete</button>" +
+
+                        "<hr>";
+
+                    contentList.appendChild(contentDiv);
+
+                });
+
+            })
+
+            .catch(error => {
+
+                contentList.innerHTML =
+                    "Unable to load course content.";
+
+            });
+
+        }
+
+
+        function addContent() {
+
+            let courseId =
+                document.getElementById("courseSelect").value;
+
+            if (courseId === "") {
+
+                alert("Please select a course first.");
+
+                return;
+
+            }
+
+            window.location.href =
+                "/add-content.html?courseId=" + courseId;
+
+        }
+
+
+        function editContent(contentId) {
+
+            window.location.href =
+                "/edit-content.html?contentId=" +
+                contentId;
+
+        }
+
+
+        function deleteContent(contentId) {
+
+            let confirmDelete =
+                confirm(
+                    "Are you sure you want to delete this content?"
+                );
+
+            if (!confirmDelete) {
+
+                return;
+
+            }
+
+            fetch(
+                "/delete-course-content/" + contentId,
+                {
+                    method: "DELETE"
+                }
+            )
+
+            .then(response => response.text())
+
+            .then(result => {
+
+                alert(result);
+
+                loadContent();
+
+            })
+
+            .catch(error => {
+
+                alert("Unable to delete course content.");
+
+            });
+
+        }
+
+
+        function goBack() {
+
+            window.location.href =
+                "/instructor.html";
+
+        }
+
+
+        loadCourses();
+
+    </script>
+
+</body>
+
+</html>

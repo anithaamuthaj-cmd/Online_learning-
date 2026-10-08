@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Java Basics Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Java Basics Quiz</h1>
+
+<p>Answer the following questions and submit the quiz.</p>
+
+<div id="quizContainer">
+    Loading questions...
+</div>
+
+<button onclick="submitQuiz()">Submit Quiz</button>
+
+<h2 id="result"></h2>
+
+<script>
+
+let questions = [];
+
+fetch("/quiz-questions?quizId=1")
+    .then(response => response.json())
+    .then(data => {
+
+        questions = data;
+
+        let quizContainer =
+            document.getElementById("quizContainer");
+
+        quizContainer.innerHTML = "";
+
+        questions.forEach((question, index) => {
+
+            let questionDiv =
+                document.createElement("div");
+
+            questionDiv.innerHTML =
+                "<h3>" +
+                (index + 1) +
+                ". " +
+                question.questionText +
+                "</h3>" +
+
+                "<label>" +
+                "<input type='radio' " +
+                "name='question" + question.questionId +
+                "' value='A'>" +
+                " A. " + question.optionA +
+                "</label><br>" +
+
+                "<label>" +
+                "<input type='radio' " +
+                "name='question" + question.questionId +
+                "' value='B'>" +
+                " B. " + question.optionB +
+                "</label><br>" +
+
+                "<label>" +
+                "<input type='radio' " +
+                "name='question" + question.questionId +
+                "' value='C'>" +
+                " C. " + question.optionC +
+                "</label><br>" +
+
+                "<label>" +
+                "<input type='radio' " +
+                "name='question" + question.questionId +
+                "' value='D'>" +
+                " D. " + question.optionD +
+                "</label><br><hr>";
+
+            quizContainer.appendChild(questionDiv);
+        });
+    })
+    .catch(error => {
+
+        document.getElementById("quizContainer").innerHTML =
+            "Unable to load quiz questions.";
+
+    });
+
+
+function submitQuiz() {
+
+    let score = 0;
+
+    questions.forEach(question => {
+
+        let selected =
+            document.querySelector(
+                "input[name='question" +
+                question.questionId +
+                "']:checked"
+            );
+
+        if (selected &&
+            selected.value === question.correctAnswer) {
+
+            score++;
+        }
+    });
+
+    let resultStatus =
+        score === questions.length
+        ? "PASSED"
+        : "COMPLETED";
+
+    fetch(
+        "/quiz-result?quizId=1&userId=2&score=" +
+        score +
+        "&resultStatus=" +
+        resultStatus,
+        {
+            method: "POST"
+        }
+    )
+    .then(response => response.text())
+    .then(message => {
+
+        document.getElementById("result").innerHTML =
+            "Your Score: " +
+            score +
+            " / " +
+            questions.length +
+            "<br>" +
+            message;
+
+    })
+    .catch(error => {
+
+        document.getElementById("result").innerHTML =
+            "Your Score: " +
+            score +
+            " / " +
+            questions.length +
+            "<br>Unable to save quiz result.";
+
+    });
+}
+
+</script>
+
+</body>
+</html>

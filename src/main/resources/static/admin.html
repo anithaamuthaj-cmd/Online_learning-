@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Admin Dashboard</h1>
+
+    <h2>Welcome, Admin!</h2>
+
+    <p>Manage users, courses, payments, quizzes, progress and certificates from the admin dashboard.</p>
+
+    <hr>
+
+    <h3>Admin Functions</h3>
+
+
+    <button onclick="manageUsers()">
+        Manage Users
+    </button>
+
+    <br><br>
+
+
+    <button onclick="manageCourses()">
+        Manage Courses
+    </button>
+
+    <br><br>
+
+
+    <button onclick="managePayments()">
+        Manage Payments
+    </button>
+
+    <br><br>
+
+
+    <button onclick="manageQuizzes()">
+        Manage Quizzes
+    </button>
+
+    <br><br>
+
+
+    <button onclick="manageProgress()">
+        Manage Progress
+    </button>
+
+    <br><br>
+
+
+    <button onclick="manageCertificates()">
+        Manage Certificates
+    </button>
+
+    <br><br>
+
+
+    <button onclick="logout()">
+        Logout
+    </button>
+
+
+    <script>
+
+        function manageUsers() {
+
+            window.location.href =
+                "/manage-users.html";
+
+        }
+
+
+        function manageCourses() {
+
+            window.location.href =
+                "/admin-courses.html";
+
+        }
+
+
+        function managePayments() {
+
+            window.location.href =
+                "/manage-payments.html";
+
+        }
+
+
+        function manageQuizzes() {
+
+            window.location.href =
+                "/admin-quizzes.html";
+
+        }
+
+
+        function manageProgress() {
+
+            window.location.href =
+                "/admin-progress.html";
+
+        }
+
+
+        function manageCertificates() {
+
+            window.location.href =
+                "/admin-certificates.html";
+
+        }
+
+
+        function logout() {
+
+            window.location.href =
+                "/login.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>

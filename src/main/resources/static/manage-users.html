@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Manage Users</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Manage Users</h1>
+
+    <h2>User Management</h2>
+
+    <p>View all registered users on the platform.</p>
+
+    <hr>
+
+    <div id="userList">
+        Loading users...
+    </div>
+
+    <hr>
+
+    <button onclick="goBack()">
+        Back to Admin Dashboard
+    </button>
+
+
+    <script>
+
+        function loadUsers() {
+
+            fetch("/admin/users")
+
+            .then(response => response.json())
+
+            .then(users => {
+
+                let userList =
+                    document.getElementById("userList");
+
+                userList.innerHTML = "";
+
+                users.forEach(user => {
+
+                    let userDiv =
+                        document.createElement("div");
+
+                    userDiv.innerHTML =
+
+                        "<h3>" +
+                        user.user_name +
+                        "</h3>" +
+
+                        "<p>User ID: " +
+                        user.user_id +
+                        "</p>" +
+
+                        "<p>Email: " +
+                        user.email_id +
+                        "</p>" +
+
+                        "<p>Role: " +
+                        user.user_role +
+                        "</p>" +
+
+                        "<hr>";
+
+                    userList.appendChild(userDiv);
+
+                });
+
+            })
+
+            .catch(error => {
+
+                document.getElementById("userList").innerHTML =
+                    "Unable to load users.";
+
+            });
+
+        }
+
+
+        function goBack() {
+
+            window.location.href =
+                "/admin.html";
+
+        }
+
+
+        loadUsers();
+
+    </script>
+
+</body>
+
+</html>

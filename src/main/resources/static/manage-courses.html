@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Manage Courses</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Manage Courses</h1>
+
+    <h2>Instructor Course Management</h2>
+
+    <p>Here you can view and manage your courses.</p>
+
+    <hr>
+
+    <button onclick="addCourse()">
+        Add New Course
+    </button>
+
+    <hr>
+
+    <h3>My Courses</h3>
+
+    <div id="courseList"></div>
+
+    <hr>
+
+    <button onclick="goBack()">
+        Back to Dashboard
+    </button>
+
+
+    <script>
+
+        function addCourse() {
+
+            window.location.href = "/add-course.html";
+
+        }
+
+
+        fetch("/courses")
+        .then(response => response.json())
+        .then(courses => {
+
+            let courseList =
+                document.getElementById("courseList");
+
+            courses.forEach(course => {
+
+                let courseDiv =
+                    document.createElement("div");
+
+                courseDiv.innerHTML =
+                    "<h3>" + course.title + "</h3>" +
+                    "<p>" + course.description + "</p>" +
+                    "<p>Course ID: " +
+                    course.courseId + "</p>" +
+
+                    "<button onclick=\"editCourse(" +
+                    course.courseId +
+                    ")\">Edit</button>" +
+
+                    " <button onclick=\"deleteCourse(" +
+                    course.courseId +
+                    ")\">Delete</button>" +
+
+                    "<hr>";
+
+                courseList.appendChild(courseDiv);
+
+            });
+
+        })
+        .catch(error => {
+
+            document.getElementById("courseList").innerHTML =
+                "Unable to load courses.";
+
+        });
+
+
+        function editCourse(courseId) {
+
+            window.location.href =
+                "/edit-course.html?courseId=" + courseId;
+
+        }
+
+
+        function deleteCourse(courseId) {
+
+            let confirmDelete =
+                confirm("Are you sure you want to delete this course?");
+
+            if (!confirmDelete) {
+
+                return;
+
+            }
+
+            fetch("/delete-course/" + courseId, {
+
+                method: "DELETE"
+
+            })
+            .then(response => response.text())
+            .then(result => {
+
+                alert(result);
+
+                location.reload();
+
+            })
+            .catch(error => {
+
+                alert("Unable to delete course.");
+
+            });
+
+        }
+
+
+        function goBack() {
+
+            window.location.href = "/instructor.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+

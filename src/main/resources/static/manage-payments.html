@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Manage Payments</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Manage Payments</h1>
+
+    <h2>Payment Management</h2>
+
+    <p>View all payment transactions on the platform.</p>
+
+    <hr>
+
+    <div id="paymentList">
+        Loading payments...
+    </div>
+
+    <hr>
+
+    <button onclick="goBack()">
+        Back to Admin Dashboard
+    </button>
+
+
+    <script>
+
+        function loadPayments() {
+
+            fetch("/payments")
+
+            .then(response => response.json())
+
+            .then(payments => {
+
+                let paymentList =
+                    document.getElementById("paymentList");
+
+                paymentList.innerHTML = "";
+
+                payments.forEach(payment => {
+
+                    let paymentDiv =
+                        document.createElement("div");
+
+                    paymentDiv.innerHTML =
+
+                        "<h3>Transaction ID: " +
+                        payment.transactionId +
+                        "</h3>" +
+
+                        "<p>Payment ID: " +
+                        payment.paymentId +
+                        "</p>" +
+
+                        "<p>User ID: " +
+                        payment.studentId +
+                        "</p>" +
+
+                        "<p>Course ID: " +
+                        payment.courseId +
+                        "</p>" +
+
+                        "<p>Amount: ₹" +
+                        payment.amount +
+                        "</p>" +
+
+                        "<p>Payment Date: " +
+                        payment.paymentDate +
+                        "</p>" +
+
+                        "<p>Payment Type: " +
+                        payment.paymentType +
+                        "</p>" +
+
+                        "<p>Payment Status: " +
+                        payment.paymentStatus +
+                        "</p>" +
+
+                        "<hr>";
+
+                    paymentList.appendChild(paymentDiv);
+
+                });
+
+            })
+
+            .catch(error => {
+
+                document.getElementById("paymentList").innerHTML =
+                    "Unable to load payments.";
+
+            });
+
+        }
+
+
+        function goBack() {
+
+            window.location.href =
+                "/admin.html";
+
+        }
+
+
+        loadPayments();
+
+    </script>
+
+</body>
+
+</html>
+
