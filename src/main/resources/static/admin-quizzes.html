@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Manage Quizzes</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Manage Quizzes</h1>
+
+    <h2>Quiz Management</h2>
+
+    <p>View all quizzes available on the platform.</p>
+
+    <hr>
+
+    <div id="quizList">
+        Loading quizzes...
+    </div>
+
+    <hr>
+
+    <button onclick="goBack()">
+        Back to Admin Dashboard
+    </button>
+
+    <script>
+
+        function loadQuizzes() {
+
+            fetch("/quizzes")
+            .then(response => response.json())
+            .then(quizzes => {
+
+                let quizList =
+                    document.getElementById("quizList");
+
+                quizList.innerHTML = "";
+
+                quizzes.forEach(quiz => {
+
+                    let quizDiv =
+                        document.createElement("div");
+
+                    quizDiv.innerHTML =
+
+                        "<h3>" +
+                        quiz.title +
+                        "</h3>" +
+
+                        "<p>Quiz ID: " +
+                        quiz.quizId +
+                        "</p>" +
+
+                        "<p>Course ID: " +
+                        quiz.courseId +
+                        "</p>" +
+
+                        "<p>Total Marks: " +
+                        quiz.totalMarks +
+                        "</p>" +
+
+                        "<p>User ID: " +
+                        quiz.userId +
+                        "</p>" +
+
+                        "<p>Result ID: " +
+                        quiz.resultId +
+                        "</p>" +
+
+                        "<p>Created Date: " +
+                        quiz.createdAt +
+                        "</p>" +
+
+                        "<hr>";
+
+                    quizList.appendChild(quizDiv);
+
+                });
+
+            })
+            .catch(error => {
+
+                document.getElementById("quizList").innerHTML =
+                    "Unable to load quizzes.";
+
+            });
+
+        }
+
+        function goBack() {
+
+            window.location.href =
+                "/admin.html";
+
+        }
+
+        loadQuizzes();
+
+    </script>
+
+</body>
+
+</html>

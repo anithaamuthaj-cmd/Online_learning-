@@ -1,0 +1,706 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Courses | LearnHub</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f6fc;
+            color: #202b45;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            background: #172554;
+            color: white;
+            padding: 30px 18px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 27px;
+            font-weight: bold;
+            margin: 0 10px 8px;
+        }
+
+        .brand span {
+            color: #60a5fa;
+        }
+
+        .subtitle {
+            color: #b8c7e6;
+            font-size: 13px;
+            margin: 0 10px 35px;
+        }
+
+        .menu-title {
+            color: #94a9d1;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            margin: 25px 10px 12px;
+        }
+
+        .nav-link {
+            display: block;
+            text-decoration: none;
+            color: #dce7fb;
+            padding: 13px 14px;
+            margin: 7px 0;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #3156a5;
+            color: white;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .topbar h1 {
+            font-size: 27px;
+        }
+
+        .topbar p {
+            color: #75819a;
+            margin-top: 6px;
+        }
+
+        .user-badge {
+            background: white;
+            border: 1px solid #e2e8f3;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-weight: 600;
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #2563eb, #6d5dfc);
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            box-shadow: 0 10px 25px #3556b51c;
+        }
+
+        .hero h2 {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #e5eaff;
+            line-height: 1.6;
+            max-width: 540px;
+        }
+
+        .hero-icon {
+            font-size: 60px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 16px;
+            border: 1px solid #e5eaf4;
+            box-shadow: 0 5px 18px #1e3a5f08;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .blue {
+            background: #dbeafe;
+        }
+
+        .purple {
+            background: #ede9fe;
+        }
+
+        .green {
+            background: #d1fae5;
+        }
+
+        .stat-card h3 {
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #78849a;
+            font-size: 13px;
+        }
+
+        .section {
+            background: white;
+            border: 1px solid #e5eaf4;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 5px 18px #1e3a5f08;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .section-header h2 {
+            font-size: 21px;
+        }
+
+        .section-header p {
+            color: #78849a;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 300px;
+            padding: 12px 14px;
+            border: 1px solid #dbe3f0;
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-box:focus {
+            border-color: #3b82f6;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .course-card {
+            border: 1px solid #e4eaf4;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.2s;
+            background: white;
+        }
+
+        .course-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px #243b6012;
+        }
+
+        .course-banner {
+            background: linear-gradient(120deg, #dbeafe, #e9e7ff);
+            padding: 20px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .course-banner .book {
+            font-size: 38px;
+        }
+
+        .course-label {
+            background: white;
+            color: #3156a5;
+            border-radius: 20px;
+            padding: 7px 11px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .course-body {
+            padding: 20px;
+        }
+
+        .course-body h3 {
+            font-size: 19px;
+            margin-bottom: 10px;
+            overflow-wrap: anywhere;
+        }
+
+        .description {
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            overflow-wrap: anywhere;
+        }
+
+        .course-id {
+            display: inline-block;
+            color: #59677f;
+            background: #f1f5f9;
+            padding: 6px 10px;
+            border-radius: 7px;
+            font-size: 12px;
+            margin-bottom: 18px;
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-top: 1px solid #edf0f6;
+            padding-top: 16px;
+        }
+
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 11px 15px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-edit {
+            background: #e0eaff;
+            color: #2453a6;
+        }
+
+        .btn-edit:hover {
+            background: #c9dcff;
+        }
+
+        .btn-delete {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .btn-delete:hover {
+            background: #fecaca;
+        }
+
+        .btn-light {
+            background: white;
+            color: #1e3a8a;
+        }
+
+        .empty-state,
+        .loading-state {
+            text-align: center;
+            padding: 45px 15px;
+            color: #718096;
+            line-height: 1.8;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state .empty-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #8a96aa;
+            padding: 25px 0 5px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 950px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                padding: 22px;
+            }
+
+            .course-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .subtitle {
+                margin-bottom: 15px;
+            }
+
+            .menu-title {
+                margin-top: 15px;
+            }
+
+            .main {
+                padding: 18px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 23px;
+            }
+
+            .hero h2 {
+                font-size: 21px;
+            }
+
+            .section {
+                padding: 17px;
+            }
+
+            .search-box {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">Learn<span>Hub.</span></div>
+        <div class="subtitle">Learning Management Platform</div>
+
+        <div class="menu-title">INSTRUCTOR MENU</div>
+
+        <a class="nav-link" href="/instructor.html">⌂ Dashboard</a>
+        <a class="nav-link active" href="/manage-courses.html">▣ Manage Courses</a>
+        <a class="nav-link" href="/manage-content.html">▤ Course Content</a>
+
+        <div class="menu-title">ACCOUNT</div>
+        <a class="nav-link" href="/login.html" onclick="logout(event)">↪ Logout</a>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <h1>Manage Courses</h1>
+                <p>Create, view and manage your learning courses.</p>
+            </div>
+            <div class="user-badge">👨‍🏫 Instructor Portal</div>
+        </div>
+
+        <section class="hero">
+            <div>
+                <h2>Your Courses, Your Classroom!</h2>
+                <p>
+                    Organize your courses in one place. Add new learning
+                    experiences, update course details, and manage your
+                    course catalogue.
+                </p>
+                <br>
+                <button class="btn-light" onclick="addCourse()">
+                    ＋ Add New Course
+                </button>
+            </div>
+            <div class="hero-icon">📚</div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-icon blue">📘</div>
+                <h3 id="totalCourses">—</h3>
+                <p>Total Courses Listed</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple">✏️</div>
+                <h3>Manage</h3>
+                <p>Edit course information</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">🚀</div>
+                <h3>Create</h3>
+                <p>Share new learning content</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <h2>📚 My Courses</h2>
+                    <p>Courses returned by the platform</p>
+                </div>
+
+                <input
+                    type="search"
+                    class="search-box"
+                    id="courseSearch"
+                    placeholder="🔍 Search courses..."
+                    oninput="filterCourses()"
+                >
+            </div>
+
+            <div id="courseList" class="course-grid">
+                <div class="loading-state">⏳ Loading courses...</div>
+            </div>
+        </section>
+
+        <div class="footer">
+            © 2026 LearnHub. Instructor Course Management.
+        </div>
+
+    </main>
+</div>
+
+<script>
+    let allCourses = [];
+
+    function addCourse() {
+        window.location.href = "/add-course.html";
+    }
+
+    function loadCourses() {
+        fetch("/courses")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Unable to load courses");
+                }
+                return response.json();
+            })
+            .then(courses => {
+                allCourses = Array.isArray(courses) ? courses : [];
+
+                document.getElementById("totalCourses").textContent =
+                    allCourses.length;
+
+                displayCourses(allCourses);
+            })
+            .catch(error => {
+                document.getElementById("totalCourses").textContent = "—";
+
+                document.getElementById("courseList").innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⚠️</div>
+                        <h3>Unable to load courses</h3>
+                        <p>Please check whether the LearnHub server is running.</p>
+                        <br>
+                        <button class="btn-primary" onclick="loadCourses()">
+                            Try Again
+                        </button>
+                    </div>
+                `;
+            });
+    }
+
+    function displayCourses(courses) {
+        const courseList = document.getElementById("courseList");
+        courseList.innerHTML = "";
+
+        if (courses.length === 0) {
+            courseList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>No courses found</h3>
+                    <p>Add a course or try another search term.</p>
+                    <br>
+                    <button class="btn-primary" onclick="addCourse()">
+                        ＋ Add New Course
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        courses.forEach(course => {
+            const courseDiv = document.createElement("article");
+            courseDiv.className = "course-card";
+
+            const banner = document.createElement("div");
+            banner.className = "course-banner";
+
+            const book = document.createElement("span");
+            book.className = "book";
+            book.textContent = "📖";
+
+            const label = document.createElement("span");
+            label.className = "course-label";
+            label.textContent = "LEARNHUB COURSE";
+
+            banner.appendChild(book);
+            banner.appendChild(label);
+
+            const body = document.createElement("div");
+            body.className = "course-body";
+
+            const title = document.createElement("h3");
+            title.textContent = course.title || "Untitled Course";
+
+            const description = document.createElement("p");
+            description.className = "description";
+            description.textContent =
+                course.description || "No course description available.";
+
+            const id = document.createElement("div");
+            id.className = "course-id";
+            id.textContent = "Course ID: " + course.courseId;
+
+            const actions = document.createElement("div");
+            actions.className = "course-actions";
+
+            const editButton = document.createElement("button");
+            editButton.className = "btn-edit";
+            editButton.textContent = "✏️ Edit";
+            editButton.addEventListener("click", function () {
+                editCourse(course.courseId);
+            });
+
+            const deleteButton = document.createElement("button");
+            deleteButton.className = "btn-delete";
+            deleteButton.textContent = "🗑 Delete";
+            deleteButton.addEventListener("click", function () {
+                deleteCourse(course.courseId);
+            });
+
+            actions.appendChild(editButton);
+            actions.appendChild(deleteButton);
+
+            body.appendChild(title);
+            body.appendChild(description);
+            body.appendChild(id);
+            body.appendChild(actions);
+
+            courseDiv.appendChild(banner);
+            courseDiv.appendChild(body);
+
+            courseList.appendChild(courseDiv);
+        });
+    }
+
+    function filterCourses() {
+        const searchText = document
+            .getElementById("courseSearch")
+            .value
+            .toLowerCase()
+            .trim();
+
+        const filteredCourses = allCourses.filter(course => {
+            const title = (course.title || "").toLowerCase();
+            const description = (course.description || "").toLowerCase();
+            const courseId = String(course.courseId || "");
+
+            return title.includes(searchText) ||
+                   description.includes(searchText) ||
+                   courseId.includes(searchText);
+        });
+
+        displayCourses(filteredCourses);
+    }
+
+    function editCourse(courseId) {
+        window.location.href =
+            "/edit-course.html?courseId=" + encodeURIComponent(courseId);
+    }
+
+    function deleteCourse(courseId) {
+        const confirmDelete = confirm(
+            "Are you sure you want to delete course ID " + courseId + "?"
+        );
+
+        if (!confirmDelete) {
+            return;
+        }
+
+        fetch("/delete-course/" + encodeURIComponent(courseId), {
+            method: "DELETE"
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Delete request failed");
+            }
+            return response.text();
+        })
+        .then(result => {
+            alert(result || "Delete request completed.");
+            loadCourses();
+        })
+        .catch(error => {
+            alert(
+                "Unable to delete course. Please check whether the backend " +
+                "DELETE endpoint is available."
+            );
+        });
+    }
+
+    function logout(event) {
+        event.preventDefault();
+
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userName");
+
+        window.location.href = "/login.html";
+    }
+
+    loadCourses();
+</script>
+
+</body>
+</html>

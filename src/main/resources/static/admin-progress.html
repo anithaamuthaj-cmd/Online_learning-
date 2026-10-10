@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Manage Progress</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Manage Progress</h1>
+
+    <h2>User Progress Management</h2>
+
+    <p>View user course progress on the platform.</p>
+
+    <hr>
+
+    <div id="progressList">
+        Loading progress...
+    </div>
+
+    <hr>
+
+    <button onclick="goBack()">
+        Back to Admin Dashboard
+    </button>
+
+    <script>
+
+        function loadProgress() {
+
+            fetch("/progress?userId=2")
+
+            .then(response => response.json())
+
+            .then(progressList => {
+
+                let progressDiv =
+                    document.getElementById("progressList");
+
+                progressDiv.innerHTML = "";
+
+                if (progressList.length === 0) {
+
+                    progressDiv.innerHTML =
+                        "No progress records found.";
+
+                    return;
+                }
+
+                progressList.forEach(progress => {
+
+                    let progressItem =
+                        document.createElement("div");
+
+                    progressItem.innerHTML =
+
+                        "<h3>Progress ID: " +
+                        progress.progressId +
+                        "</h3>" +
+
+                        "<p>User ID: " +
+                        progress.userId +
+                        "</p>" +
+
+                        "<p>Content ID: " +
+                        progress.contentId +
+                        "</p>" +
+
+                        "<p>Progress Marks: " +
+                        progress.progressMarks +
+                        "</p>" +
+
+                        "<p>Status: " +
+                        progress.completeStatus +
+                        "</p>" +
+
+                        "<p>Completed Date: " +
+                        (progress.completedAt || "Not completed") +
+                        "</p>" +
+
+                        "<hr>";
+
+                    progressDiv.appendChild(progressItem);
+
+                });
+
+            })
+
+            .catch(error => {
+
+                document.getElementById("progressList").innerHTML =
+                    "Unable to load progress.";
+
+            });
+
+        }
+
+        function goBack() {
+
+            window.location.href =
+                "/admin.html";
+
+        }
+
+        loadProgress();
+
+    </script>
+
+</body>
+
+</html>
+

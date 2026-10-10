@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Course Content</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Course Content</h1>
+
+<h2 id="courseTitle">Loading course...</h2>
+
+<p id="courseDescription"></p>
+
+<button id="enrollButton" onclick="enrollCourse()">
+    Enroll in this Course
+</button>
+
+<p id="enrollmentMessage"></p>
+
+<hr>
+
+<h2>Course Materials</h2>
+
+<div id="courseContent">
+    Loading course content...
+</div>
+
+
+<script>
+
+// Get course ID from URL
+let urlParams =
+    new URLSearchParams(window.location.search);
+
+let courseId =
+    urlParams.get("courseId");
+
+
+// Get logged-in user ID
+let userId =
+    localStorage.getItem("userId");
+
+
+// Get logged-in user role
+let userRole =
+    localStorage.getItem("userRole");
+
+
+// Check login
+if (!userId) {
+
+    alert("Please login first.");
+
+    window.location.href =
+        "/login.html";
+}
+
+
+// Only USER can access this page
+if (userRole !== "USER") {
+
+    alert("Unauthorized access.");
+
+    window.location.href =
+        "/login.html";
+}
+
+
+// Check course ID
+if (!courseId) {
+
+    document.getElementById(
+        "courseContent"
+    ).innerHTML =
+        "<p>Invalid course.</p>";
+
+}
+else {
+
+    loadCourse();
+
+    checkEnrollment();
+
+    loadCourseContent();
+
+}
+
+
+// Load course details
+function loadCourse() {
+
+    fetch("/courses")
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load courses"
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(courses => {
+
+            let course =
+                courses.find(
+                    c =>
+                    String(c.courseId) ===
+                    String(courseId)
+                );
+
+
+            if (!course) {
+
+                document.getElementById(
+                    "courseTitle"
+                ).innerText =
+                    "Course not found";
+
+                return;
+
+            }
+
+
+            document.getElementById(
+                "courseTitle"
+            ).innerText =
+                course.title;
+
+
+            document.getElementById(
+                "courseDescription"
+            ).innerText =
+                course.description;
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            document.getElementById(
+                "courseTitle"
+            ).innerText =
+                "Unable to load course";
+
+        });
+
+}
+
+
+// Check whether user is already enrolled
+function checkEnrollment() {
+
+    fetch(
+        "/enrollments?userId=" +
+        userId
+    )
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to check enrollment"
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(enrolledCourses => {
+
+            let isEnrolled =
+                enrolledCourses.includes(
+                    Number(courseId)
+                );
+
+
+            let enrollButton =
+                document.getElementById(
+                    "enrollButton"
+                );
+
+
+            if (isEnrolled) {
+
+                enrollButton.innerText =
+                    "Already Enrolled";
+
+                enrollButton.disabled =
+                    true;
+
+                document.getElementById(
+                    "enrollmentMessage"
+                ).innerText =
+                    "You are enrolled in this course.";
+
+            }
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+        });
+
+}
+
+
+// Enroll in course
+function enrollCourse() {
+
+    fetch(
+        "/enroll?userId=" +
+        userId +
+        "&courseId=" +
+        courseId,
+        {
+            method: "POST"
+        }
+    )
+
+    .then(response => response.text())
+
+    .then(message => {
+
+        document.getElementById(
+            "enrollmentMessage"
+        ).innerText =
+            message;
+
+
+        if (
+            message ===
+            "Enrollment successful!"
+        ) {
+
+            document.getElementById(
+                "enrollButton"
+            ).innerText =
+                "Already Enrolled";
+
+
+            document.getElementById(
+                "enrollButton"
+            ).disabled =
+                true;
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        document.getElementById(
+            "enrollmentMessage"
+        ).innerText =
+            "Enrollment failed.";
+
+    });
+
+}
+
+
+// Load course content
+function loadCourseContent() {
+
+    fetch(
+        "/course-content?courseId=" +
+        courseId
+    )
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Unable to load content"
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(contents => {
+
+            let courseContent =
+                document.getElementById(
+                    "courseContent"
+                );
+
+
+            courseContent.innerHTML = "";
+
+
+            if (contents.length === 0) {
+
+                courseContent.innerHTML =
+                    "<p>No content available for this course.</p>";
+
+                return;
+
+            }
+
+
+            contents.forEach(content => {
+
+                let contentDiv =
+                    document.createElement("div");
+
+
+                contentDiv.innerHTML =
+
+                    "<h3>" +
+                    content.title +
+                    "</h3>" +
+
+                    "<p>Type: " +
+                    content.contentType +
+                    "</p>" +
+
+                    "<p>Duration: " +
+                    content.duration +
+                    " minutes</p>" +
+
+                    "<p>File: " +
+                    content.contentUrl +
+                    "</p>" +
+
+                    "<a href='/" +
+                    content.contentUrl +
+                    "' target='_blank'>" +
+                    "Open Content" +
+                    "</a>" +
+
+                    "<br><br>" +
+
+                    "<button onclick=\"markCompleted(" +
+                    content.contentId +
+                    ")\">" +
+                    "Mark as Completed" +
+                    "</button>" +
+
+                    "<hr>";
+
+
+                courseContent.appendChild(
+                    contentDiv
+                );
+
+            });
+
+        })
+
+        .catch(error => {
+
+            console.error(error);
+
+            document.getElementById(
+                "courseContent"
+            ).innerHTML =
+                "<p>Unable to load course content.</p>";
+
+        });
+
+}
+
+
+// Mark content as completed
+function markCompleted(contentId) {
+
+    fetch(
+        "/progress/complete?userId=" +
+        userId +
+        "&contentId=" +
+        contentId,
+        {
+            method: "POST"
+        }
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to update progress"
+            );
+
+        }
+
+        return response.text();
+
+    })
+
+    .then(message => {
+
+        alert(message);
+
+
+        if (
+            message ===
+            "Content completed successfully!"
+        ) {
+
+            loadCourseContent();
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+
+        alert(
+            "Failed to update progress."
+        );
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>

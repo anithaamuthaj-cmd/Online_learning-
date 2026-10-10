@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | LearnHub</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f7fc;
+            color: #202b45;
+        }
+
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        button:hover { opacity: .88; transform: translateY(-1px); }
+
+        .sidebar {
+            position: fixed;
+            inset: 0 auto 0 0;
+            width: 245px;
+            background: #142447;
+            color: white;
+            padding: 27px 17px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 800;
+            margin: 0 0 36px 10px;
+        }
+
+        .brand span { color: #70b8ff; }
+
+        .nav-label {
+            color: #98a8c8;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            margin: 0 10px 14px;
+        }
+
+        .nav-link {
+            display: block;
+            color: #d6e0f4;
+            text-decoration: none;
+            padding: 12px 11px;
+            border-radius: 9px;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #2d4779;
+            color: white;
+        }
+
+        .nav-link span {
+            display: inline-block;
+            width: 28px;
+            font-size: 16px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            border-top: 1px solid #334467;
+            padding-top: 15px;
+        }
+
+        .main {
+            margin-left: 245px;
+            padding: 28px 35px 45px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+
+        h1 { font-size: 26px; margin-bottom: 6px; }
+        h2 { font-size: 21px; }
+        .muted { color: #7d8aa5; font-size: 14px; line-height: 1.7; }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px #182e5010;
+        }
+
+        .avatar {
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: #eee5ff;
+            color: #6740ba;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .hero {
+            background: linear-gradient(115deg, #49339b, #8370e8);
+            color: white;
+            border-radius: 19px;
+            padding: 30px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .hero h2 { font-size: 25px; margin-bottom: 10px; }
+        .hero p { color: #ece8ff; font-size: 14px; line-height: 1.8; }
+        .hero-icon { font-size: 70px; }
+        .white-btn { background: white; color: #49339b; margin-top: 17px; }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 21px;
+            border-radius: 14px;
+            border: 1px solid #e7edf6;
+            box-shadow: 0 4px 16px #182e5008;
+        }
+
+        .stat-icon {
+            display: grid;
+            place-items: center;
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            font-size: 21px;
+            margin-bottom: 14px;
+        }
+
+        .blue { background: #e4edff; }
+        .green { background: #dcf8e9; }
+        .orange { background: #fff0d9; }
+        .purple { background: #eee5ff; }
+        .teal { background: #dcf8f5; }
+        .pink { background: #ffe6ee; }
+
+        .stat-number { font-size: 23px; font-weight: 800; margin: 7px 0; }
+
+        .section-heading { margin-bottom: 17px; }
+        .section-heading p { margin-top: 5px; }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+        }
+
+        .action-card {
+            background: white;
+            border: 1px solid #e7edf6;
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 0 4px 18px #182e5008;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-width: 0;
+        }
+
+        .card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 26px;
+            margin-bottom: 16px;
+        }
+
+        .action-card h3 { font-size: 17px; margin-bottom: 8px; }
+        .action-card p { color: #7d8aa5; font-size: 13px; line-height: 1.7; }
+
+        .action-card button {
+            background: #49339b;
+            color: white;
+            margin-top: auto;
+            margin-top: 18px;
+        }
+
+        .tip {
+            background: #f0eaff;
+            color: #514080;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 25px;
+            line-height: 1.7;
+            font-size: 13px;
+        }
+
+        footer { text-align: center; color: #8b96aa; font-size: 12px; margin-top: 38px; }
+
+        @media (max-width: 1100px) {
+            .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .main { padding: 25px; }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                padding: 16px;
+            }
+
+            .brand { margin: 0 0 14px; }
+            .nav-label, .sidebar-bottom { display: none; }
+
+            .sidebar nav { display: flex; gap: 7px; overflow-x: auto; }
+            .nav-link { white-space: nowrap; margin: 0; padding: 10px; }
+
+            .main { margin-left: 0; padding: 20px 15px; }
+            .hero-icon { display: none; }
+            .hero { padding: 23px; }
+            .cards, .stats { grid-template-columns: 1fr; }
+            .profile-info { display: none; }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="brand">Learn<span>Hub.</span></div>
+        <div class="nav-label">ADMINISTRATION</div>
+
+        <nav>
+            <a class="nav-link active" href="#dashboard"><span>⌂</span>Dashboard</a>
+            <a class="nav-link" href="#management" onclick="manageUsers()"><span>♙</span>Manage Users</a>
+            <a class="nav-link" href="#management" onclick="manageCourses()"><span>▣</span>Manage Courses</a>
+            <a class="nav-link" href="#management" onclick="managePayments()"><span>₹</span>Manage Payments</a>
+            <a class="nav-link" href="#management" onclick="manageQuizzes()"><span>✓</span>Manage Quizzes</a>
+            <a class="nav-link" href="#management" onclick="manageProgress()"><span>▥</span>Manage Progress</a>
+            <a class="nav-link" href="#management" onclick="manageCertificates()"><span>♧</span>Certificates</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a class="nav-link" href="#" onclick="logout()"><span>⇥</span>Logout</a>
+        </div>
+    </aside>
+
+    <main class="main" id="dashboard">
+        <header class="topbar">
+            <div>
+                <h1>Admin Dashboard</h1>
+                <p class="muted">Manage and monitor your learning platform.</p>
+            </div>
+
+            <div class="profile">
+                <div class="avatar">A</div>
+                <div class="profile-info">
+                    <strong>Administrator</strong>
+                    <p class="muted">Platform Manager</p>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div>
+                <h2>Welcome, Admin! 👋</h2>
+                <p>Manage platform resources, users, courses, payments,<br>
+                   quizzes, learning progress, and certificates.</p>
+                <button class="white-btn" onclick="manageUsers()">Manage Users →</button>
+            </div>
+            <div class="hero-icon">🛡️</div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-icon blue">👥</div>
+                <p class="muted">User Administration</p>
+                <div class="stat-number">Users</div>
+                <p class="muted">Manage registered accounts.</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">📚</div>
+                <p class="muted">Course Administration</p>
+                <div class="stat-number">Courses</div>
+                <p class="muted">Review and manage course listings.</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">💳</div>
+                <p class="muted">Payment Records</p>
+                <div class="stat-number">Payments</div>
+                <p class="muted">Review recorded payment data.</p>
+            </div>
+        </section>
+
+        <section id="management">
+            <div class="section-heading">
+                <h2>⚙️ Platform Management</h2>
+                <p class="muted">Choose a section to manage.</p>
+            </div>
+
+            <div class="cards">
+                <article class="action-card">
+                    <div class="card-icon blue">👥</div>
+                    <h3>Manage Users</h3>
+                    <p>Access the user management page to manage platform accounts.</p>
+                    <button onclick="manageUsers()">Open User Management →</button>
+                </article>
+
+                <article class="action-card">
+                    <div class="card-icon green">📚</div>
+                    <h3>Manage Courses</h3>
+                    <p>Open the course administration section to manage course listings.</p>
+                    <button onclick="manageCourses()">Open Course Management →</button>
+                </article>
+
+                <article class="action-card">
+                    <div class="card-icon orange">💳</div>
+                    <h3>Manage Payments</h3>
+                    <p>Review payment records and transaction statuses.</p>
+                    <button onclick="managePayments()">Open Payments →</button>
+                </article>
+
+                <article class="action-card">
+                    <div class="card-icon purple">📝</div>
+                    <h3>Manage Quizzes</h3>
+                    <p>Open the quiz administration section to manage quiz data.</p>
+                    <button onclick="manageQuizzes()">Open Quizzes →</button>
+                </article>
+
+                <article class="action-card">
+                    <div class="card-icon teal">📊</div>
+                    <h3>Manage Progress</h3>
+                    <p>Review learner progress records through the administration page.</p>
+                    <button onclick="manageProgress()">Open Progress →</button>
+                </article>
+
+                <article class="action-card">
+                    <div class="card-icon pink">🏆</div>
+                    <h3>Manage Certificates</h3>
+                    <p>Open the certificate management section.</p>
+                    <button onclick="manageCertificates()">Open Certificates →</button>
+                </article>
+            </div>
+        </section>
+
+        <div class="tip">
+            💡 <strong>Admin note:</strong> Use these sections to manage the platform responsibly. Keep account access restricted to authorized administrators.
+        </div>
+
+        <footer>© LearnHub · Platform administration workspace.</footer>
+    </main>
+
+    <script>
+        function manageUsers() {
+            window.location.href = "/manage-users.html";
+        }
+
+        function manageCourses() {
+            window.location.href = "/admin-courses.html";
+        }
+
+        function managePayments() {
+            window.location.href = "/manage-payments.html";
+        }
+
+        function manageQuizzes() {
+            window.location.href = "/admin-quizzes.html";
+        }
+
+        function manageProgress() {
+            window.location.href = "/admin-progress.html";
+        }
+
+        function manageCertificates() {
+            window.location.href = "/admin-certificates.html";
+        }
+
+        function logout() {
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userRole");
+            localStorage.removeItem("userName");
+            window.location.href = "/login.html";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1068 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | Online Learning</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f7fc;
+            color: #202b45;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 9px;
+            padding: 11px 16px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .sidebar {
+            width: 245px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #142447;
+            color: white;
+            padding: 27px 17px;
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0 0 35px 10px;
+            color: #fff;
+        }
+
+        .brand span {
+            color: #70b8ff;
+        }
+
+        .nav-label {
+            color: #98a8c8;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            margin: 0 10px 13px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #d6e0f4;
+            text-decoration: none;
+            padding: 13px 12px;
+            border-radius: 9px;
+            margin-bottom: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #2d4779;
+            color: white;
+        }
+
+        .nav-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 15px 10px 0;
+            border-top: 1px solid #334467;
+        }
+
+        .main {
+            margin-left: 245px;
+            min-height: 100vh;
+            padding: 28px 35px 45px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 28px;
+        }
+
+        .topbar h1 {
+            font-size: 25px;
+            margin-bottom: 6px;
+        }
+
+        .muted {
+            color: #7d8aa5;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px #182e5010;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #dceaff;
+            color: #215ac1;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .hero {
+            background: linear-gradient(115deg, #2858cb, #658cf0);
+            color: white;
+            border-radius: 19px;
+            padding: 30px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        .hero h2 {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            line-height: 1.7;
+            color: #e7efff;
+            font-size: 14px;
+            max-width: 550px;
+        }
+
+        .hero-icon {
+            font-size: 75px;
+            opacity: 0.9;
+        }
+
+        .primary-btn {
+            background: #fff;
+            color: #2858cb;
+            margin-top: 17px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 17px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid #e9eef7;
+            box-shadow: 0 4px 16px #182e5008;
+        }
+
+        .stat-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 21px;
+            margin-bottom: 14px;
+        }
+
+        .blue { background: #e4edff; }
+        .green { background: #dcf8e9; }
+        .orange { background: #fff0d9; }
+        .purple { background: #eee5ff; }
+
+        .stat-number {
+            font-size: 27px;
+            font-weight: 800;
+            margin: 7px 0;
+        }
+
+        .section {
+            margin: 30px 0;
+            scroll-margin-top: 20px;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 17px;
+        }
+
+        .section-heading h2 {
+            font-size: 20px;
+        }
+
+        .section-heading p {
+            margin-top: 5px;
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .course-card,
+        .data-card {
+            background: white;
+            border: 1px solid #e7edf6;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 18px #182e5008;
+            min-width: 0;
+        }
+
+        .course-banner {
+            min-height: 115px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 48px;
+            margin-bottom: 17px;
+            background: linear-gradient(135deg, #e3edff, #f0e8ff);
+        }
+
+        .course-card h3,
+        .data-card h3 {
+            font-size: 17px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+            margin-bottom: 8px;
+        }
+
+        .course-description {
+            color: #7d8aa5;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 13px;
+        }
+
+        .price {
+            font-weight: 800;
+            color: #2458c5;
+            margin: 12px 0;
+            font-size: 17px;
+        }
+
+        .blue-btn {
+            background: #2858cb;
+            color: white;
+        }
+
+        .green-btn {
+            background: #148454;
+            color: white;
+        }
+
+        .light-btn {
+            background: #eaf0ff;
+            color: #2858cb;
+        }
+
+        .full-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .progress-track {
+            height: 9px;
+            border-radius: 20px;
+            background: #e8edf5;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #3675ed, #58b9f6);
+        }
+
+        .badge {
+            display: inline-block;
+            border-radius: 20px;
+            background: #e2f8eb;
+            color: #16834d;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 10px;
+            margin: 8px 0;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .empty-state,
+        .loading {
+            background: white;
+            border: 1px dashed #cad5e7;
+            color: #7d8aa5;
+            border-radius: 13px;
+            padding: 25px;
+            text-align: center;
+            line-height: 1.7;
+            grid-column: 1 / -1;
+        }
+
+        .message {
+            display: none;
+            margin-bottom: 20px;
+            padding: 14px 17px;
+            border-radius: 10px;
+            background: #e2f8eb;
+            color: #126b40;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .warning-note {
+            background: #fff6df;
+            color: #886014;
+            border-radius: 10px;
+            padding: 13px 15px;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+
+        footer {
+            color: #8b96aa;
+            font-size: 12px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 1150px) {
+            .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .course-grid, .data-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .main { padding: 25px; }
+        }
+
+        @media (max-width: 760px) {
+            .sidebar {
+                position: static;
+                width: 100%;
+                height: auto;
+                padding: 16px;
+            }
+
+            .brand { margin: 0 0 15px; }
+            .nav-label, .sidebar-bottom { display: none; }
+
+            .sidebar nav {
+                display: flex;
+                gap: 7px;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            .nav-link {
+                white-space: nowrap;
+                margin: 0;
+                padding: 10px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px 15px;
+            }
+
+            .topbar { align-items: flex-start; }
+            .topbar h1 { font-size: 22px; }
+            .profile { padding: 7px; }
+            .profile-info { display: none; }
+            .hero { padding: 23px; }
+            .hero h2 { font-size: 21px; }
+            .hero-icon { display: none; }
+            .course-grid, .data-grid { grid-template-columns: 1fr; }
+            .stats { gap: 10px; }
+            .stat-card { padding: 14px; }
+            .stat-number { font-size: 23px; }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="brand">Learn<span>Hub.</span></div>
+        <div class="nav-label">LEARNING MENU</div>
+
+        <nav>
+            <a class="nav-link active" href="#dashboard">
+                <span class="nav-icon">⌂</span> Dashboard
+            </a>
+            <a class="nav-link" href="#enrolled">
+                <span class="nav-icon">▣</span> My Courses
+            </a>
+            <a class="nav-link" href="#available">
+                <span class="nav-icon">⌕</span> Browse Courses
+            </a>
+            <a class="nav-link" href="#progress">
+                <span class="nav-icon">▥</span> My Progress
+            </a>
+            <a class="nav-link" href="#quizzes" onclick="openQuiz()">
+                <span class="nav-icon">✓</span> Quizzes
+            </a>
+            <a class="nav-link" href="#certificates">
+                <span class="nav-icon">♧</span> Certificates
+            </a>
+            <a class="nav-link" href="#payments">
+                <span class="nav-icon">₹</span> Payment History
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a class="nav-link" href="#" onclick="logout()">
+                <span class="nav-icon">⇥</span> Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main" id="dashboard">
+        <header class="topbar">
+            <div>
+                <h1>User Dashboard</h1>
+                <p class="muted">Manage your learning journey in one place.</p>
+            </div>
+
+            <div class="profile">
+                <div class="avatar" id="avatarLetter">U</div>
+                <div class="profile-info">
+                    <strong id="profileName">User</strong>
+                    <p class="muted">Learner</p>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div>
+                <h2 id="welcomeMessage">Welcome!</h2>
+                <p>
+                    Keep learning, improve your skills, and reach your goals.
+                    Your next learning milestone starts here.
+                </p>
+                <button class="primary-btn" onclick="scrollToSection('available')">
+                    Explore Courses →
+                </button>
+            </div>
+            <div class="hero-icon" aria-hidden="true">🎓</div>
+        </section>
+
+        <div id="paymentMessage" class="message" role="status"></div>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-icon blue">📚</div>
+                <p class="muted">Enrolled Courses</p>
+                <div class="stat-number" id="enrolledCount">—</div>
+                <p class="muted">Your learning library</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">📈</div>
+                <p class="muted">Progress Records</p>
+                <div class="stat-number" id="progressCount">—</div>
+                <p class="muted">Tracked content items</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange">🏆</div>
+                <p class="muted">Certificates</p>
+                <div class="stat-number" id="certificateCount">—</div>
+                <p class="muted">Achievements earned</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon purple">💳</div>
+                <p class="muted">Payment Records</p>
+                <div class="stat-number" id="paymentCount">—</div>
+                <p class="muted">Recorded transactions</p>
+            </div>
+        </section>
+
+        <section class="section" id="enrolled">
+            <div class="section-heading">
+                <div>
+                    <h2>📚 My Enrolled Courses</h2>
+                    <p class="muted">Continue learning where you left off.</p>
+                </div>
+            </div>
+            <div class="course-grid" id="enrolledCourseList">
+                <div class="loading">Loading your courses...</div>
+            </div>
+        </section>
+
+        <section class="section" id="progress">
+            <div class="section-heading">
+                <div>
+                    <h2>📈 My Learning Progress</h2>
+                    <p class="muted">Review your content completion status.</p>
+                </div>
+            </div>
+            <div class="data-grid" id="progressList">
+                <div class="loading">Loading progress...</div>
+            </div>
+        </section>
+
+        <section class="section" id="certificates">
+            <div class="section-heading">
+                <div>
+                    <h2>🏆 My Certificates</h2>
+                    <p class="muted">Your course achievements.</p>
+                </div>
+            </div>
+            <div class="data-grid" id="certificateList">
+                <div class="loading">Loading certificates...</div>
+            </div>
+        </section>
+
+        <section class="section" id="payments">
+            <div class="section-heading">
+                <div>
+                    <h2>💳 Payment History</h2>
+                    <p class="muted">View your recorded demo transactions.</p>
+                </div>
+                <button class="light-btn" onclick="loadPaymentHistory()">
+                    ↻ Refresh
+                </button>
+            </div>
+
+            <div class="data-grid" id="paymentHistoryList">
+                <div class="loading">Loading payment history...</div>
+            </div>
+
+            <div class="warning-note">
+                Demo payment only: this project does not collect real money.
+            </div>
+        </section>
+
+        <section class="section" id="available">
+            <div class="section-heading">
+                <div>
+                    <h2>🌟 Explore Available Courses</h2>
+                    <p class="muted">Discover courses you have not enrolled in.</p>
+                </div>
+            </div>
+            <div class="course-grid" id="courseList">
+                <div class="loading">Loading available courses...</div>
+            </div>
+        </section>
+
+        <footer>© Online Learning Platform · Keep learning, keep growing.</footer>
+    </main>
+
+    <script>
+        const userId = localStorage.getItem("userId");
+        const userRole = localStorage.getItem("userRole");
+
+        let enrolledCourses = [];
+        const paymentsInProgress = new Set();
+
+        function logout() {
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userRole");
+            window.location.href = "/login.html";
+        }
+
+        if (!userId) {
+            alert("Please login first.");
+            window.location.href = "/login.html";
+        } else if (userRole !== "USER") {
+            alert("Unauthorized access.");
+            window.location.href = "/login.html";
+        } else {
+            const savedName = localStorage.getItem("userName") || "User";
+            document.getElementById("welcomeMessage").textContent =
+                "Welcome back, " + savedName + "!";
+            document.getElementById("profileName").textContent = savedName;
+            document.getElementById("avatarLetter").textContent =
+                savedName.charAt(0).toUpperCase();
+
+            loadDashboard();
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        function openQuiz() {
+            window.location.href = "/quiz.html";
+        }
+
+        function viewCourse(courseId) {
+            window.location.href =
+                "/course.html?courseId=" + encodeURIComponent(courseId);
+        }
+
+        function viewCertificate(certificateId) {
+            window.location.href =
+                "/certificate.html?certificateId=" +
+                encodeURIComponent(certificateId);
+        }
+
+        function loadDashboard() {
+            loadEnrolledCourseIds();
+            loadEnrolledCourses();
+            loadProgress();
+            loadCertificates();
+            loadPaymentHistory();
+        }
+
+        function showEmpty(list, text) {
+            list.replaceChildren();
+            const message = document.createElement("div");
+            message.className = "empty-state";
+            message.textContent = text;
+            list.appendChild(message);
+        }
+
+        function makeCard(titleText, descriptionText) {
+            const card = document.createElement("div");
+            card.className = "data-card";
+
+            const title = document.createElement("h3");
+            title.textContent = titleText;
+
+            const description = document.createElement("p");
+            description.className = "muted";
+            description.textContent = descriptionText;
+
+            card.append(title, description);
+            return card;
+        }
+
+        function loadEnrolledCourseIds() {
+            fetch("/enrollments?userId=" + encodeURIComponent(userId))
+                .then(response => {
+                    if (!response.ok) throw new Error("Could not load enrollments.");
+                    return response.json();
+                })
+                .then(data => {
+                    enrolledCourses = [...new Set(data.map(Number))];
+                    loadCourses();
+                })
+                .catch(error => {
+                    console.error(error);
+                    showEmpty(
+                        document.getElementById("courseList"),
+                        "Unable to load enrollment information. Please refresh."
+                    );
+                });
+        }
+
+        function loadEnrolledCourses() {
+            fetch("/my-courses?userId=" + encodeURIComponent(userId))
+                .then(response => {
+                    if (!response.ok) throw new Error("Could not load courses.");
+                    return response.json();
+                })
+                .then(courses => {
+                    const list = document.getElementById("enrolledCourseList");
+                    list.replaceChildren();
+
+                    const uniqueCourses = [
+                        ...new Map(courses.map(course =>
+                            [course.courseId, course])).values()
+                    ];
+
+                    document.getElementById("enrolledCount").textContent =
+                        uniqueCourses.length;
+
+                    if (uniqueCourses.length === 0) {
+                        showEmpty(list, "You have not enrolled in a course yet. Explore the available courses below.");
+                        return;
+                    }
+
+                    uniqueCourses.forEach((course, index) => {
+                        const card = document.createElement("article");
+                        card.className = "course-card";
+
+                        const banner = document.createElement("div");
+                        banner.className = "course-banner";
+                        banner.textContent = ["💻", "🌐", "🚀", "🐍"][index % 4];
+
+                        const title = document.createElement("h3");
+                        title.textContent = course.title || "Course";
+
+                        const description = document.createElement("p");
+                        description.className = "course-description";
+                        description.textContent =
+                            course.description || "Explore your course materials and build new skills.";
+
+                        const price = document.createElement("p");
+                        price.className = "price";
+                        price.textContent = "₹" + (course.coursePrice ?? 0);
+
+                        const badge = document.createElement("span");
+                        badge.className = "badge";
+                        badge.textContent = "✓ Enrolled";
+
+                        const button = document.createElement("button");
+                        button.className = "blue-btn full-btn";
+                        button.textContent = "Continue Learning →";
+                        button.onclick = () => viewCourse(course.courseId);
+
+                        card.append(banner, title, description, badge, price, button);
+                        list.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    showEmpty(
+                        document.getElementById("enrolledCourseList"),
+                        "Unable to load enrolled courses. Check the backend and try again."
+                    );
+                });
+        }
+
+        function loadProgress() {
+            fetch("/progress?userId=" + encodeURIComponent(userId))
+                .then(response => {
+                    if (!response.ok) throw new Error("Could not load progress.");
+                    return response.json();
+                })
+                .then(progressData => {
+                    const list = document.getElementById("progressList");
+                    list.replaceChildren();
+
+                    document.getElementById("progressCount").textContent =
+                        (progressData || []).length;
+
+                    if (!progressData || progressData.length === 0) {
+                        showEmpty(list, "No progress records yet. Start learning a course to track your progress.");
+                        return;
+                    }
+
+                    progressData.forEach(progress => {
+                        const card = makeCard(
+                            "Content ID: " + progress.contentId,
+                            "Completed date: " +
+                            (progress.completedAt || "Not completed")
+                        );
+
+                        const marks = Number(progress.progressMarks) || 0;
+                        const percentage = Math.max(0, Math.min(100, marks));
+
+                        const label = document.createElement("p");
+                        label.className = "muted";
+                        label.textContent = "Progress: " + percentage + "%";
+
+                        const track = document.createElement("div");
+                        track.className = "progress-track";
+
+                        const fill = document.createElement("div");
+                        fill.className = "progress-fill";
+                        fill.style.width = percentage + "%";
+                        track.appendChild(fill);
+
+                        const badge = document.createElement("span");
+                        badge.className = "badge";
+                        badge.textContent = progress.completeStatus || "In progress";
+
+                        card.append(label, track, badge);
+                        list.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    showEmpty(document.getElementById("progressList"),
+                        "Unable to load progress. Please try again.");
+                });
+        }
+
+        function loadCertificates() {
+            fetch("/certificates?userId=" + encodeURIComponent(userId))
+                .then(response => {
+                    if (!response.ok) throw new Error("Could not load certificates.");
+                    return response.json();
+                })
+                .then(certificates => {
+                    const list = document.getElementById("certificateList");
+                    list.replaceChildren();
+
+                    document.getElementById("certificateCount").textContent =
+                        (certificates || []).length;
+
+                    if (!certificates || certificates.length === 0) {
+                        showEmpty(list, "No certificates available yet. Complete eligible courses to earn certificates.");
+                        return;
+                    }
+
+                    certificates.forEach(certificate => {
+                        const card = makeCard(
+                            "🏆 " + (certificate.courseTitle || "Course Certificate"),
+                            "Certificate No: " + (certificate.certificateNo || "N/A")
+                        );
+
+                        const date = document.createElement("p");
+                        date.className = "muted";
+                        date.textContent = "Issued on: " +
+                            (certificate.issueDate || "Not available");
+
+                        const button = document.createElement("button");
+                        button.className = "green-btn full-btn";
+                        button.textContent = "View Certificate";
+                        button.onclick = () =>
+                            viewCertificate(certificate.certificateId);
+
+                        card.append(date, button);
+                        list.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    showEmpty(document.getElementById("certificateList"),
+                        "Unable to load certificates. Please try again.");
+                });
+        }
+
+        function loadPaymentHistory() {
+            const list = document.getElementById("paymentHistoryList");
+            list.replaceChildren();
+
+            const loading = document.createElement("div");
+            loading.className = "loading";
+            loading.textContent = "Loading payment history...";
+            list.appendChild(loading);
+
+            fetch("/payments?userId=" + encodeURIComponent(userId))
+                .then(response => {
+                    if (!response.ok) throw new Error("Could not load payment history.");
+                    return response.json();
+                })
+                .then(payments => {
+                    list.replaceChildren();
+
+                    document.getElementById("paymentCount").textContent =
+                        (payments || []).length;
+
+                    if (!payments || payments.length === 0) {
+                        showEmpty(list, "No payment records found.");
+                        return;
+                    }
+
+                    payments.forEach(payment => {
+                        const card = makeCard(
+                            payment.courseTitle || ("Course ID: " + payment.courseId),
+                            "Transaction ID: " +
+                            (payment.transactionId || "Not available")
+                        );
+
+                        const amount = document.createElement("p");
+                        amount.className = "price";
+                        amount.textContent = "₹" + (payment.amount ?? 0);
+
+                        const status = document.createElement("span");
+                        status.className = "badge";
+                        status.textContent = payment.paymentStatus || "Unknown status";
+
+                        const type = document.createElement("p");
+                        type.className = "muted";
+                        type.textContent = "Payment type: " +
+                            (payment.paymentType || "Not available");
+
+                        const date = document.createElement("p");
+                        date.className = "muted";
+                        date.textContent = "Date: " +
+                            (payment.paymentDate || "Not available");
+
+                        card.append(amount, status, type, date);
+                        list.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    showEmpty(list,
+                        "Unable to load payment history. Check the backend and try again.");
+                });
+        }
+
+        function loadCourses() {
+            fetch("/courses")
+                .then(response => {
+                    if (!response.ok) throw new Error("Could not load courses.");
+                    return response.json();
+                })
+                .then(courses => {
+                    const list = document.getElementById("courseList");
+                    list.replaceChildren();
+
+                    const availableCourses = courses.filter(course =>
+                        !enrolledCourses.includes(Number(course.courseId))
+                    );
+
+                    if (availableCourses.length === 0) {
+                        showEmpty(list, "You have enrolled in all available courses. Great work!");
+                        return;
+                    }
+
+                    availableCourses.forEach((course, index) => {
+                        const card = document.createElement("article");
+                        card.className = "course-card";
+
+                        const banner = document.createElement("div");
+                        banner.className = "course-banner";
+                        banner.textContent = ["💻", "🌐", "🚀", "🐍"][index % 4];
+
+                        const title = document.createElement("h3");
+                        title.textContent = course.title || "Course";
+
+                        const description = document.createElement("p");
+                        description.className = "course-description";
+                        description.textContent =
+                            course.description || "Learn new skills with this course.";
+
+                        const price = document.createElement("p");
+                        price.className = "price";
+                        price.textContent = "₹" + (course.coursePrice ?? 0);
+
+                        const button = document.createElement("button");
+                        button.className = "blue-btn full-btn";
+                        button.textContent = "Pay & Enroll (Demo)";
+                        button.onclick = () =>
+                            payAndEnroll(course.courseId, button);
+
+                        card.append(banner, title, description, price, button);
+                        list.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    showEmpty(list, "Unable to load available courses.");
+                });
+        }
+
+        function payAndEnroll(courseId, button) {
+            if (paymentsInProgress.has(courseId)) return;
+
+            if (!confirm(
+                "Continue with a simulated payment? No real money will be collected."
+            )) return;
+
+            paymentsInProgress.add(courseId);
+            button.disabled = true;
+            button.textContent = "Processing demo payment...";
+
+            const message = document.getElementById("paymentMessage");
+            message.textContent = "";
+            message.classList.remove("show");
+
+            fetch(
+                "/demo-payment?userId=" + encodeURIComponent(userId) +
+                "&courseId=" + encodeURIComponent(courseId),
+                { method: "POST" }
+            )
+                .then(response => {
+                    if (!response.ok) throw new Error("Demo payment request failed.");
+                    return response.json();
+                })
+                .then(payment => {
+                    if (!payment.success) {
+                        throw new Error(payment.message || "Demo payment failed.");
+                    }
+
+                    message.textContent =
+                        "Demo payment recorded. Transaction ID: " +
+                        payment.transactionId +
+                        ". No real money was collected.";
+                    message.classList.add("show");
+
+                    loadPaymentHistory();
+
+                    return fetch(
+                        "/enroll?userId=" + encodeURIComponent(userId) +
+                        "&courseId=" + encodeURIComponent(courseId),
+                        { method: "POST" }
+                    );
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(
+                            "Payment was recorded, but enrollment could not be completed."
+                        );
+                    }
+                    return response.text();
+                })
+                .then(result => {
+                    if (result.trim() === "Enrollment successful!") {
+                        alert("Demo payment recorded and enrollment successful. No real money was collected.");
+                        location.reload();
+                    } else if (result.trim() === "Already enrolled in this course!") {
+                        alert("You are already enrolled in this course.");
+                        location.reload();
+                    } else {
+                        throw new Error("Enrollment failed: " + result);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    message.textContent = error.message;
+                    message.classList.add("show");
+                    button.disabled = false;
+                    button.textContent = "Retry Demo Payment";
+                    loadPaymentHistory();
+                })
+                .finally(() => {
+                    paymentsInProgress.delete(courseId);
+                });
+        }
+    </script>
+</body>
+</html>

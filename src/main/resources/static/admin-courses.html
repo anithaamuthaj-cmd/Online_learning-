@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Admin - Manage Courses</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <h1>Admin - Manage Courses</h1>
+
+    <h2>Course Management</h2>
+
+    <p>View all active courses on the platform.</p>
+
+    <hr>
+
+    <div id="courseList">
+        Loading courses...
+    </div>
+
+    <hr>
+
+    <button onclick="goBack()">
+        Back to Admin Dashboard
+    </button>
+
+
+    <script>
+
+        function loadCourses() {
+
+            fetch("/courses")
+
+            .then(response => response.json())
+
+            .then(courses => {
+
+                let courseList =
+                    document.getElementById("courseList");
+
+                courseList.innerHTML = "";
+
+                courses.forEach(course => {
+
+                    let courseDiv =
+                        document.createElement("div");
+
+                    courseDiv.innerHTML =
+
+                        "<h3>" +
+                        course.title +
+                        "</h3>" +
+
+                        "<p>Course ID: " +
+                        course.courseId +
+                        "</p>" +
+
+                        "<p>Description: " +
+                        course.description +
+                        "</p>" +
+
+                        "<p>Category: " +
+                        course.category +
+                        "</p>" +
+
+                        "<p>Price: ₹" +
+                        course.coursePrice +
+                        "</p>" +
+
+                        "<p>Status: " +
+                        course.status +
+                        "</p>" +
+
+                        "<hr>";
+
+                    courseList.appendChild(courseDiv);
+
+                });
+
+            })
+
+            .catch(error => {
+
+                document.getElementById("courseList").innerHTML =
+                    "Unable to load courses.";
+
+            });
+
+        }
+
+
+        function goBack() {
+
+            window.location.href =
+                "/admin.html";
+
+        }
+
+
+        loadCourses();
+
+    </script>
+
+</body>
+
+</html>

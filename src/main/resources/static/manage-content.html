@@ -1,0 +1,961 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Course Content | LearnHub</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6fb;
+            color: #263247;
+            min-height: 100vh;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 245px;
+            background: #172554;
+            color: white;
+            padding: 28px 18px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 27px;
+            font-weight: 800;
+            margin: 0 10px 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .brand span {
+            color: #60a5fa;
+        }
+
+        .sidebar-subtitle {
+            color: #a9b8d5;
+            font-size: 13px;
+            margin: 0 10px 35px;
+        }
+
+        .nav-title {
+            color: #94a3b8;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 20px 10px 12px;
+        }
+
+        .nav-link {
+            display: block;
+            text-decoration: none;
+            color: #dbeafe;
+            padding: 13px 14px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #334a82;
+            color: white;
+        }
+
+        .nav-link.active {
+            border-left: 4px solid #60a5fa;
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .page-heading h1 {
+            font-size: 27px;
+            color: #172554;
+            margin-bottom: 7px;
+        }
+
+        .page-heading p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .dashboard-btn {
+            background: white;
+            color: #334155;
+            border: 1px solid #dce3ef;
+            padding: 11px 16px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .dashboard-btn:hover {
+            background: #eef2ff;
+        }
+
+        /* Hero banner */
+        .hero {
+            background: linear-gradient(120deg, #2563eb, #6d55d9);
+            color: white;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 22px rgba(59, 87, 190, 0.16);
+        }
+
+        .hero h2 {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #e6eaff;
+            line-height: 1.6;
+            max-width: 650px;
+            font-size: 14px;
+        }
+
+        /* Summary cards */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 21px;
+            border-radius: 15px;
+            border: 1px solid #e7eaf2;
+            box-shadow: 0 3px 12px rgba(31, 41, 55, 0.035);
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e3a8a;
+        }
+
+        .stat-icon {
+            float: right;
+            width: 39px;
+            height: 39px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            font-size: 19px;
+        }
+
+        .icon-blue {
+            background: #dbeafe;
+        }
+
+        .icon-purple {
+            background: #ede9fe;
+        }
+
+        .icon-green {
+            background: #dcfce7;
+        }
+
+        /* Content management panel */
+        .panel {
+            background: white;
+            padding: 25px;
+            border: 1px solid #e7eaf2;
+            border-radius: 16px;
+            box-shadow: 0 3px 12px rgba(31, 41, 55, 0.035);
+            margin-bottom: 25px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .panel-header h2 {
+            font-size: 20px;
+            color: #172554;
+            margin-bottom: 6px;
+        }
+
+        .panel-header p {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .primary-btn {
+            border: none;
+            background: linear-gradient(120deg, #2563eb, #6655d9);
+            color: white;
+            border-radius: 9px;
+            padding: 12px 17px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .primary-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .course-selector {
+            margin-bottom: 24px;
+        }
+
+        .course-selector label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #334155;
+        }
+
+        .course-selector select {
+            width: 100%;
+            max-width: 520px;
+            padding: 13px;
+            border: 1px solid #d5dced;
+            background: #fbfcff;
+            border-radius: 9px;
+            outline: none;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .course-selector select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px #e0e7ff;
+        }
+
+        /* Material cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .content-card {
+            border: 1px solid #e3e8f2;
+            border-radius: 14px;
+            padding: 20px;
+            background: #fff;
+            transition: 0.2s;
+            min-width: 0;
+        }
+
+        .content-card:hover {
+            border-color: #b7c8ff;
+            box-shadow: 0 7px 20px rgba(37, 99, 235, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .content-card-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            margin-bottom: 17px;
+        }
+
+        .material-icon {
+            width: 49px;
+            height: 49px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 23px;
+        }
+
+        .pdf-icon {
+            background: #fee2e2;
+        }
+
+        .video-icon {
+            background: #dbeafe;
+        }
+
+        .other-icon {
+            background: #ede9fe;
+        }
+
+        .content-title {
+            font-size: 17px;
+            line-height: 1.4;
+            color: #1e293b;
+            overflow-wrap: anywhere;
+            margin-bottom: 6px;
+        }
+
+        .type-badge {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 4px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .content-details {
+            border-top: 1px solid #edf0f6;
+            padding-top: 14px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 11px;
+            font-size: 13px;
+        }
+
+        .detail-label {
+            color: #718096;
+            flex-shrink: 0;
+        }
+
+        .detail-value {
+            color: #334155;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .content-url {
+            display: block;
+            color: #2563eb;
+            font-size: 13px;
+            margin-top: 12px;
+            overflow-wrap: anywhere;
+            text-decoration: none;
+        }
+
+        .content-url:hover {
+            text-decoration: underline;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 19px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .edit-btn {
+            color: #1d4ed8;
+            background: #dbeafe;
+        }
+
+        .delete-btn {
+            color: #b91c1c;
+            background: #fee2e2;
+        }
+
+        .edit-btn:hover {
+            background: #bfdbfe;
+        }
+
+        .delete-btn:hover {
+            background: #fecaca;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 42px 20px;
+            background: #f8faff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 13px;
+            color: #64748b;
+            line-height: 1.8;
+        }
+
+        .empty-state .empty-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state h3 {
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .footer {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            padding: 15px 0;
+        }
+
+        @media (max-width: 1000px) {
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                padding: 22px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .brand {
+                margin-bottom: 5px;
+            }
+
+            .sidebar-subtitle {
+                margin-bottom: 18px;
+            }
+
+            .nav-title {
+                margin-top: 12px;
+            }
+
+            .nav-link {
+                display: inline-block;
+                margin: 0 4px 5px 0;
+                padding: 10px 12px;
+            }
+
+            .main {
+                padding: 18px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 23px;
+            }
+
+            .hero h2 {
+                font-size: 22px;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="brand">Learn<span>Hub</span></div>
+        <p class="sidebar-subtitle">Instructor Workspace</p>
+
+        <div class="nav-title">Main Menu</div>
+
+        <a href="/instructor.html" class="nav-link">
+            🏠 Instructor Dashboard
+        </a>
+
+        <a href="/manage-courses.html" class="nav-link">
+            📚 Manage Courses
+        </a>
+
+        <a href="/manage-content.html" class="nav-link active">
+            📄 Course Content
+        </a>
+
+        <div class="nav-title">Account</div>
+
+        <a href="#" class="nav-link" onclick="logout(); return false;">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+    <!-- Main area -->
+    <main class="main">
+
+        <div class="topbar">
+
+            <div class="page-heading">
+                <h1>Manage Course Content</h1>
+                <p>Organize and manage the learning materials in your courses.</p>
+            </div>
+
+            <a href="/instructor.html" class="dashboard-btn">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+        <!-- Hero -->
+        <section class="hero">
+            <h2>Your Learning Materials, All in One Place</h2>
+            <p>
+                Manage your course PDFs, videos, and other learning resources.
+                Select a course to view its content, add new materials,
+                update existing content, or remove materials you no longer need.
+            </p>
+        </section>
+
+        <!-- Summary -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <span class="stat-icon icon-blue">📚</span>
+                <div class="stat-label">Available Courses</div>
+                <div class="stat-number" id="courseCount">0</div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon icon-purple">📄</span>
+                <div class="stat-label">Materials in Selected Course</div>
+                <div class="stat-number" id="contentCount">0</div>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon icon-green">⏱️</span>
+                <div class="stat-label">Total Duration</div>
+                <div class="stat-number" id="totalDuration">0 min</div>
+            </div>
+
+        </section>
+
+        <!-- Content management -->
+        <section class="panel">
+
+            <div class="panel-header">
+                <div>
+                    <h2>Course Materials</h2>
+                    <p>Select a course to manage its learning resources.</p>
+                </div>
+
+                <button class="primary-btn" onclick="addContent()">
+                    + Add New Content
+                </button>
+            </div>
+
+            <div class="course-selector">
+                <label for="courseSelect">Select Course</label>
+
+                <select id="courseSelect" onchange="loadContent()">
+                    <option value="">Select a course</option>
+                </select>
+            </div>
+
+            <div id="contentList" aria-live="polite">
+                <div class="empty-state">
+                    <div class="empty-icon">📚</div>
+                    <h3>Select a course</h3>
+                    Choose a course above to view its learning materials.
+                </div>
+            </div>
+
+        </section>
+
+        <div class="footer">
+            © 2026 LearnHub | Instructor Course Content Management
+        </div>
+
+    </main>
+
+</div>
+
+<script>
+    const courseSelect = document.getElementById("courseSelect");
+    const contentList = document.getElementById("contentList");
+
+    function showMessage(title, message, icon = "📚") {
+        contentList.replaceChildren();
+
+        const box = document.createElement("div");
+        box.className = "empty-state";
+
+        const iconElement = document.createElement("div");
+        iconElement.className = "empty-icon";
+        iconElement.textContent = icon;
+
+        const heading = document.createElement("h3");
+        heading.textContent = title;
+
+        const description = document.createElement("p");
+        description.textContent = message;
+
+        box.append(iconElement, heading, description);
+        contentList.appendChild(box);
+    }
+
+    function resetStats() {
+        document.getElementById("contentCount").textContent = "0";
+        document.getElementById("totalDuration").textContent = "0 min";
+    }
+
+    async function loadCourses() {
+        try {
+            const response = await fetch("/courses");
+
+            if (!response.ok) {
+                throw new Error("Unable to load courses");
+            }
+
+            const courses = await response.json();
+
+            document.getElementById("courseCount").textContent =
+                Array.isArray(courses) ? courses.length : 0;
+
+            if (!Array.isArray(courses)) {
+                throw new Error("Invalid course data");
+            }
+
+            courses.forEach(course => {
+                const option = document.createElement("option");
+                option.value = course.courseId;
+                option.textContent = course.title;
+                courseSelect.appendChild(option);
+            });
+
+            // Restore the course from the URL, if supplied.
+            const params = new URLSearchParams(window.location.search);
+            const requestedCourseId = params.get("courseId");
+
+            if (
+                requestedCourseId &&
+                [...courseSelect.options].some(
+                    option => option.value === requestedCourseId
+                )
+            ) {
+                courseSelect.value = requestedCourseId;
+                await loadContent();
+            } else {
+                showMessage(
+                    "Select a course",
+                    "Choose a course above to view its learning materials."
+                );
+            }
+
+        } catch (error) {
+            document.getElementById("courseCount").textContent = "—";
+
+            showMessage(
+                "Unable to load courses",
+                "Check that your Spring Boot application is running, then refresh this page.",
+                "⚠️"
+            );
+
+            console.error("Error loading courses:", error);
+        }
+    }
+
+    async function loadContent() {
+        const courseId = courseSelect.value;
+
+        resetStats();
+
+        if (!courseId) {
+            showMessage(
+                "Select a course",
+                "Choose a course above to view its learning materials."
+            );
+            return;
+        }
+
+        showMessage("Loading content...", "Please wait while we load the materials.", "⏳");
+
+        try {
+            const response = await fetch(
+                "/course-content?courseId=" + encodeURIComponent(courseId)
+            );
+
+            if (!response.ok) {
+                throw new Error("Unable to load course content");
+            }
+
+            const contents = await response.json();
+
+            if (!Array.isArray(contents)) {
+                throw new Error("Invalid content data");
+            }
+
+            document.getElementById("contentCount").textContent = contents.length;
+
+            const totalMinutes = contents.reduce((total, content) => {
+                return total + (Number(content.duration) || 0);
+            }, 0);
+
+            document.getElementById("totalDuration").textContent =
+                totalMinutes + " min";
+
+            contentList.replaceChildren();
+
+            if (contents.length === 0) {
+                showMessage(
+                    "No content available",
+                    "This course does not have any learning materials yet. Use Add New Content to get started."
+                );
+                return;
+            }
+
+            const grid = document.createElement("div");
+            grid.className = "content-grid";
+
+            contents.forEach(content => {
+                grid.appendChild(createContentCard(content));
+            });
+
+            contentList.appendChild(grid);
+
+        } catch (error) {
+            showMessage(
+                "Unable to load course content",
+                "Please check your Spring Boot application and try again.",
+                "⚠️"
+            );
+
+            console.error("Error loading course content:", error);
+        }
+    }
+
+    function createContentCard(content) {
+        const card = document.createElement("article");
+        card.className = "content-card";
+
+        const type = String(content.contentType || "OTHER").toUpperCase();
+
+        let materialIcon = "📎";
+        let iconClass = "other-icon";
+
+        if (type.includes("PDF")) {
+            materialIcon = "📕";
+            iconClass = "pdf-icon";
+        } else if (type.includes("VIDEO")) {
+            materialIcon = "🎬";
+            iconClass = "video-icon";
+        }
+
+        const top = document.createElement("div");
+        top.className = "content-card-top";
+
+        const icon = document.createElement("div");
+        icon.className = "material-icon " + iconClass;
+        icon.textContent = materialIcon;
+
+        const titleArea = document.createElement("div");
+        titleArea.style.minWidth = "0";
+
+        const title = document.createElement("h3");
+        title.className = "content-title";
+        title.textContent = content.title || "Untitled Material";
+
+        const badge = document.createElement("span");
+        badge.className = "type-badge";
+        badge.textContent = type;
+
+        titleArea.append(title, badge);
+        top.append(icon, titleArea);
+
+        const details = document.createElement("div");
+        details.className = "content-details";
+
+        addDetail(details, "Content ID", content.contentId ?? "—");
+        addDetail(details, "Duration", (Number(content.duration) || 0) + " minutes");
+
+        const url = String(content.contentUrl || "").trim();
+
+        if (url) {
+            const link = document.createElement("a");
+            link.className = "content-url";
+            link.textContent = "↗ Open learning material";
+            link.href = url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.title = url;
+
+            // Display the link only for normal web or relative paths.
+            // JavaScript URLs are not allowed.
+            if (/^\s*javascript:/i.test(url)) {
+                link.removeAttribute("href");
+                link.textContent = "Invalid material URL";
+            }
+
+            details.appendChild(link);
+        } else {
+            addDetail(details, "Material URL", "Not provided");
+        }
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        const editButton = document.createElement("button");
+        editButton.className = "action-btn edit-btn";
+        editButton.textContent = "✏️ Edit";
+        editButton.addEventListener("click", () => {
+            editContent(content.contentId);
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "action-btn delete-btn";
+        deleteButton.textContent = "🗑️ Delete";
+        deleteButton.addEventListener("click", () => {
+            deleteContent(content.contentId);
+        });
+
+        actions.append(editButton, deleteButton);
+        card.append(top, details, actions);
+
+        return card;
+    }
+
+    function addDetail(container, label, value) {
+        const row = document.createElement("div");
+        row.className = "detail-row";
+
+        const labelElement = document.createElement("span");
+        labelElement.className = "detail-label";
+        labelElement.textContent = label;
+
+        const valueElement = document.createElement("span");
+        valueElement.className = "detail-value";
+        valueElement.textContent = String(value);
+
+        row.append(labelElement, valueElement);
+        container.appendChild(row);
+    }
+
+    function addContent() {
+        const courseId = courseSelect.value;
+
+        if (!courseId) {
+            alert("Please select a course first.");
+            return;
+        }
+
+        window.location.href =
+            "/add-content.html?courseId=" + encodeURIComponent(courseId);
+    }
+
+    function editContent(contentId) {
+        if (contentId === undefined || contentId === null) {
+            alert("Content ID is missing.");
+            return;
+        }
+
+        window.location.href =
+            "/edit-content.html?contentId=" + encodeURIComponent(contentId);
+    }
+
+    async function deleteContent(contentId) {
+        if (contentId === undefined || contentId === null) {
+            alert("Content ID is missing.");
+            return;
+        }
+
+        const confirmed = confirm(
+            "Are you sure you want to delete this learning material?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                "/delete-course-content/" + encodeURIComponent(contentId),
+                { method: "DELETE" }
+            );
+
+            const result = await response.text();
+
+            if (!response.ok) {
+                throw new Error(result || "Delete failed");
+            }
+
+            alert(result || "Content deleted successfully.");
+            await loadContent();
+
+        } catch (error) {
+            alert("Unable to delete content. Please try again.");
+            console.error("Error deleting content:", error);
+        }
+    }
+
+    function logout() {
+        if (!confirm("Are you sure you want to log out?")) {
+            return;
+        }
+
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("userName");
+
+        window.location.href = "/login.html";
+    }
+
+    loadCourses();
+</script>
+
+</body>
+</html>
